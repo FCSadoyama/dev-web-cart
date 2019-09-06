@@ -5,6 +5,7 @@
  */
 package br.uff.controllers;
 
+import br.uff.models.User;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,18 +24,13 @@ import javax.servlet.http.HttpServletResponse;
  * @author felipe
  */
 @WebServlet(name = "index", urlPatterns = {"/"})
-public class index extends BaseController {
+public class UsersController extends BaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+        User.connect();
+        request.setAttribute("user", User.find(1));
 
-        try (PreparedStatement sql = conn.prepareStatement("select * from users")) {
-            ResultSet result = sql.executeQuery();
-            result.next();
-            request.setAttribute("user", result.getString("id"));
-        } catch (SQLException ex) {
-            Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
-        }
         RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
         view.forward(request, response);
     }
@@ -51,7 +47,11 @@ public class index extends BaseController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -65,7 +65,11 @@ public class index extends BaseController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
