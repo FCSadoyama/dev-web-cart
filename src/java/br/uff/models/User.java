@@ -5,14 +5,18 @@
  */
 package br.uff.models;
 
-import java.sql.Connection;
+import br.uff.imodels.IBaseModel;
 
 /**
  *
  * @author felipe
  */
-public class User extends BaseModel {    
+public class User extends BaseModel implements IBaseModel {    
     public static void connect() {
-        connect("users");
+        connect(User.class);
+    }
+    
+    public int id() {
+        return 2;
     }
 }

@@ -29,7 +29,8 @@ public class UsersController extends BaseController {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         User.connect();
-        request.setAttribute("user", User.find(1));
+        User user = (User) User.find(1);
+        request.setAttribute("user", user == null ? "404" : user.id());
 
         RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
         view.forward(request, response);
