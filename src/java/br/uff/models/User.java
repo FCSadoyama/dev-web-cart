@@ -33,8 +33,8 @@ public class User extends BaseModel implements IBaseModel {
         this.id = id;
     }
     
-    public int getName() {
-        return this.id;
+    public String getName() {
+        return this.name;
     }
     
     public void setName(String name) {

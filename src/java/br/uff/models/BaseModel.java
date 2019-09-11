@@ -51,7 +51,6 @@ public class BaseModel implements IBaseModel {
         Method method;
         try {
             String methodName = (String) Inflector.capitalize(attr);
-            System.out.println("KSPOOASKKOASPKASPOASKP");
             method = this.evaluator.getMethod("get" + methodName);
             return this.evaluator.invokeMethod(method);
         } catch (IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {

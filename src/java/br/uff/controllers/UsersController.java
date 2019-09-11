@@ -31,8 +31,10 @@ public class UsersController extends BaseController {
         //User user = (User) User.find(1);
         Map<String, Object> attrs = new HashMap();
         attrs.put("id", 42);
+        attrs.put("name", "Roberto");
         User user = new User(attrs);
-        request.setAttribute("user", user.getAttribute("id"));
+        request.setAttribute("id", user.getAttribute("id"));
+        request.setAttribute("name", user.getAttribute("name"));
 
         RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
         view.forward(request, response);

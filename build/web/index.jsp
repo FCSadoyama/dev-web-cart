@@ -13,6 +13,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <%= request.getAttribute("user") %>
+        Id: <%= request.getAttribute("id") %><br/>
+        Name: <%= request.getAttribute("name") %>
     </body>
 </html>

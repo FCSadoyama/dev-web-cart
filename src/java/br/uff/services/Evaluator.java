@@ -66,6 +66,6 @@ public class Evaluator {
         if (klass == Integer.class) {
             return int.class;
         }
-        return null;
+        return klass;
     }
 }
