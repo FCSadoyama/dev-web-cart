@@ -8,13 +8,17 @@ package br.uff.models;
 import br.uff.imodels.IBaseModel;
 import br.uff.services.Evaluator;
 import br.uff.services.Inflector;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,13 +63,21 @@ public class BaseModel implements IBaseModel {
         return null;
     }
     
-    public static IBaseModel<Class> find(int id) throws SQLException {
+    public static BaseModel find(int id) throws SQLException {
         try {
             PreparedStatement sql = connection.prepareStatement("select * from " + table_name + " where id = " + String.valueOf(id));
             ResultSet result = sql.executeQuery();
             result.next();
-            return (IBaseModel) child.newInstance();
-        } catch (SQLException | InstantiationException | IllegalAccessException ex) {
+            ResultSetMetaData meta = result.getMetaData();
+            int colCount = meta.getColumnCount();
+            Map<String, Object> attrs = new HashMap();
+            for (int i = 1; i <= colCount ; i++){  
+                String col_name = meta.getColumnName(i);
+                attrs.put(col_name, result.getObject(col_name));
+            }
+            Constructor<BaseModel> constructor = child.getConstructor(Map.class);
+            return constructor.newInstance(attrs);
+        } catch (SQLException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(BaseModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

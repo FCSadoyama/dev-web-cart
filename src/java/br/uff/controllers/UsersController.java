@@ -28,11 +28,7 @@ public class UsersController extends BaseController {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         User.connect();
-        //User user = (User) User.find(1);
-        Map<String, Object> attrs = new HashMap();
-        attrs.put("id", 42);
-        attrs.put("name", "Roberto");
-        User user = new User(attrs);
+        User user = (User) User.find(1);
         request.setAttribute("id", user.getAttribute("id"));
         request.setAttribute("name", user.getAttribute("name"));
 
