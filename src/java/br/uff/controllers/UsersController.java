@@ -7,15 +7,14 @@ package br.uff.controllers;
 
 import br.uff.models.User;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,8 +28,11 @@ public class UsersController extends BaseController {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         User.connect();
-        User user = (User) User.find(1);
-        request.setAttribute("user", user == null ? "404" : user.id());
+        //User user = (User) User.find(1);
+        Map<String, Object> attrs = new HashMap();
+        attrs.put("id", 42);
+        User user = new User(attrs);
+        request.setAttribute("user", user.getAttribute("id"));
 
         RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
         view.forward(request, response);

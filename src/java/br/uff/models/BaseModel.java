@@ -6,6 +6,10 @@
 package br.uff.models;
 
 import br.uff.imodels.IBaseModel;
+import br.uff.services.Evaluator;
+import br.uff.services.Inflector;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,6 +26,11 @@ public class BaseModel implements IBaseModel {
     private static Class child = null;
     private static Connection connection = null;
     private static String table_name = null;
+    protected final Evaluator evaluator;
+    
+    public BaseModel(){
+        this.evaluator = new Evaluator(this);
+    }
     
     public static Connection connect(Class klass) {
         
@@ -33,6 +42,19 @@ public class BaseModel implements IBaseModel {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cart_development", "root", "");
             return connection;
         } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(BaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Object getAttribute(String attr) {
+        Method method;
+        try {
+            String methodName = (String) Inflector.capitalize(attr);
+            System.out.println("KSPOOASKKOASPKASPOASKP");
+            method = this.evaluator.getMethod("get" + methodName);
+            return this.evaluator.invokeMethod(method);
+        } catch (IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(BaseModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

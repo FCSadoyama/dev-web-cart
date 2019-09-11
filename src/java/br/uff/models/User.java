@@ -6,17 +6,38 @@
 package br.uff.models;
 
 import br.uff.imodels.IBaseModel;
+import java.util.Map;
 
 /**
  *
  * @author felipe
  */
-public class User extends BaseModel implements IBaseModel {    
+public class User extends BaseModel implements IBaseModel {
+    public int id;
+    private String name;
+    
+    public User(Map<String, Object> attrs) {
+        super();
+        this.evaluator.initialize(attrs);
+    }
+
     public static void connect() {
         connect(User.class);
     }
     
-    public int id() {
-        return 2;
+    public int getId() {
+        return this.id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getName() {
+        return this.id;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
 }

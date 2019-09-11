@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.uff.imodels;
+package br.uff.services;
 
 /**
  *
  * @author felipe
  */
-public interface IBaseModel<T> {
+public class Inflector {
+    public static String capitalize(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
 }
