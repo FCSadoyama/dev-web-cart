@@ -38,6 +38,11 @@ public class BaseModel implements IBaseModel {
         this.evaluator = new Evaluator(this);
     }
     
+    public boolean save() {
+        //if (BaseModel.connection == null) System.out.println("NOT ACCESSABLE");
+        return true;
+    }
+    
     public static Connection connect(Class klass) {
         
         if (connection != null) return connection;

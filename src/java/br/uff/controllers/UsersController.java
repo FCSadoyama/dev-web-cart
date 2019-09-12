@@ -9,7 +9,6 @@ import br.uff.models.User;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -47,6 +46,7 @@ public class UsersController extends BaseController {
             put("id", 1);
         }};
         User user = (User) User.find_by(attrs);
+        user.save();
         request.setAttribute("id", user.getAttribute("id"));
         request.setAttribute("name", user.getAttribute("name"));
 

@@ -27,7 +27,7 @@ public class Evaluator {
     public void initialize(Map<String, Object> attributes) {
         for (Map.Entry pair : attributes.entrySet()) {
             String key = (String) pair.getKey();
-            String attrSetter = "set" + Inflector.capitalize(key);
+            String attrSetter = "set" + Inflector.toSetter(key);
             try {
                 Class type = pair.getValue().getClass();
                 Method method = this.getMethod(attrSetter, Evaluator.toPrimitive(type));

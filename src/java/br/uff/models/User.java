@@ -13,8 +13,18 @@ import java.util.Map;
  * @author felipe
  */
 public class User extends BaseModel implements IBaseModel {
-    public int id;
+    private int id;
     private String name;
+    private String email;
+    private String password;
+    private int roleId;
+    
+    public User(String name, String email, String password, int roleId) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roleId = roleId;
+    }
     
     public User(Map<String, Object> attrs) {
         super();
@@ -42,5 +52,29 @@ public class User extends BaseModel implements IBaseModel {
     
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getEmail() {
+        return this.name;
+    }
+    
+    public void setEmail(String name) {
+        this.name = name;
+    }
+    
+    public String getPassword() {
+        return this.password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public int getRoleId() {
+        return this.roleId;
+    }
+    
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 }
