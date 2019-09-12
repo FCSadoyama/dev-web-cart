@@ -17,7 +17,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,6 +87,41 @@ public class BaseModel implements IBaseModel {
             Logger.getLogger(BaseModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public static BaseModel find_by(Map<String, Object> attrs) throws SQLException {
+        BaseModel response = where(attrs).get(0);
+        return response;
+    }
+    
+    public static ArrayList<BaseModel> where(Map<String, Object> attrs) throws SQLException {
+        ArrayList<BaseModel> models = new ArrayList();
+        try {
+            StringBuilder sql = new StringBuilder();
+            sql.append("select * from ");
+            sql.append(table_name);
+            sql.append(" where ");
+            for (Map.Entry pair : attrs.entrySet()) {
+                sql.append(pair.getKey());
+                sql.append(" = ");
+                sql.append(String.valueOf(pair.getValue()));
+            }
+            PreparedStatement statement = connection.prepareStatement(sql.toString());
+            ResultSet result = statement.executeQuery();
+            result.next();
+            ResultSetMetaData meta = result.getMetaData();
+            int colCount = meta.getColumnCount();
+            Map<String, Object> persitedAttrs = new HashMap();
+            for (int i = 1; i <= colCount ; i++){
+                String col_name = meta.getColumnName(i);
+                persitedAttrs.put(col_name, result.getObject(col_name));
+            }
+            Constructor<BaseModel> constructor = child.getConstructor(Map.class);
+            models.add(constructor.newInstance(persitedAttrs));
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
+            Logger.getLogger(BaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return models;
     }
     
     private static String get_table_name() {

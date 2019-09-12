@@ -43,7 +43,10 @@ public class UsersController extends BaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        User user = (User) User.find(1);
+        HashMap<String, Object> attrs = new HashMap() {{
+            put("id", 1);
+        }};
+        User user = (User) User.find_by(attrs);
         request.setAttribute("id", user.getAttribute("id"));
         request.setAttribute("name", user.getAttribute("name"));
 
