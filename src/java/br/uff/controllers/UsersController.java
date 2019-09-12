@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,10 +25,24 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "index", urlPatterns = {"/"})
 public class UsersController extends BaseController {
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        User.connect();
+    }
+    
+    @Override
+    public void destroy() {
+        try {
+            User.disconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        User.connect();
         User user = (User) User.find(1);
         request.setAttribute("id", user.getAttribute("id"));
         request.setAttribute("name", user.getAttribute("name"));

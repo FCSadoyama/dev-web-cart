@@ -51,6 +51,10 @@ public class BaseModel implements IBaseModel {
         return null;
     }
     
+    public static void disconnect() throws SQLException {
+        connection.close();
+    }
+    
     public Object getAttribute(String attr) {
         Method method;
         try {

@@ -21,6 +21,9 @@ public class User extends BaseModel implements IBaseModel {
         this.evaluator.initialize(attrs);
     }
 
+    /**
+     * Override inherited method
+     */
     public static void connect() {
         connect(User.class);
     }
